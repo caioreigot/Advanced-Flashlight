@@ -8,8 +8,8 @@ public class FirstPersonCamera : MonoBehaviour
     public Transform characterBody;
     public Transform characterHead;
 
-    ushort sensitivityX = 100;
-    ushort sensitivityY = 100;
+    ushort sensitivityX = 70;
+    ushort sensitivityY = 70;
 
     float rotationX;
     float rotationY;

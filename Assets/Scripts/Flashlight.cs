@@ -13,7 +13,7 @@ public class Flashlight : MonoBehaviour
     private bool isOn = false;
     private bool rotating = false;
 
-    private int rotationSpeed = 35;
+    private int rotationSpeed = 40;
     
     void Update() {
         HandleInput();
@@ -61,12 +61,12 @@ public class Flashlight : MonoBehaviour
 
     IEnumerator ResetRotation() {
         while (true) {
-            transform.rotation = Quaternion.Lerp(transform.rotation, defaultRotation.transform.rotation, 0.1f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, defaultRotation.transform.rotation, 0.05f);
             
             if (transform.rotation == defaultRotation.transform.rotation || rotating)
                 yield break;
             
-            yield return new WaitForSeconds(0.02f);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 
