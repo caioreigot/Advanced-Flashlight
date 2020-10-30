@@ -21,7 +21,7 @@ public class Flashlight : MonoBehaviour
     }
 
     void HandleInput() {
-        if (Input.GetButtonDown("Fkey")) {
+        if (Input.GetKeyDown(KeyCode.F)) {
             if (!isOn)
                 FlashlightOn();
             else 
