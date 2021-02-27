@@ -6,6 +6,7 @@ public class Flashlight : MonoBehaviour
 {
 
     public GameObject lightSource;
+    public GameObject pointLight;
     public Transform defaultRotation;
     public AudioSource soundOn;
     public AudioSource soundOff;
@@ -14,7 +15,7 @@ public class Flashlight : MonoBehaviour
     private bool rotating = false;
 
     private int rotationSpeed = 40;
-    
+
     void Update() {
         HandleInput();
         HandleRotate();
@@ -31,13 +32,25 @@ public class Flashlight : MonoBehaviour
 
     void FlashlightOn() {
         lightSource.SetActive(true);
+        pointLight.SetActive(true);
+        
+        if (soundOn.isPlaying)
+            soundOn.Stop();
+    
         soundOn.Play();
+        
         isOn = true;
     }  
 
     void FlashlightOff() {
         lightSource.SetActive(false);
+        pointLight.SetActive(false);
+
+        if (soundOff.isPlaying)
+            soundOff.Stop();
+
         soundOff.Play();
+    
         isOn = false;
     }
 
@@ -52,6 +65,7 @@ public class Flashlight : MonoBehaviour
             transform.Rotate(Vector3.left, -rotX);
             transform.Rotate(Vector3.forward, rotY);
         }
+        
         if (Input.GetMouseButtonUp(1)) {
             rotating = false;
             FindObjectOfType<FirstPersonCamera>().isLocked = false;
