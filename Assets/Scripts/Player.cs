@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
 
     CharacterController controller;
 
@@ -36,17 +35,14 @@ public class Player : MonoBehaviour
 
         vertical += gravity * Time.deltaTime * Vector3.up;
 
-        if (controller.isGrounded) {
+        if (controller.isGrounded)
             vertical = Vector3.down;
-        }
 
-        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded) {
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
             vertical = jumpSpeed * Vector3.up;
-        }
 
-        if (vertical.y > 0 && (controller.collisionFlags & CollisionFlags.Above) != 0) {
+        if (vertical.y > 0 && (controller.collisionFlags & CollisionFlags.Above) != 0)
             vertical = Vector3.zero;
-        }
 
         Vector3 finalVelocity = forward + strafe + vertical;
         

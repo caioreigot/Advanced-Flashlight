@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FirstPersonCamera : MonoBehaviour
-{
+public class FirstPersonCamera : MonoBehaviour {
 
     public Transform characterBody;
     public Transform characterHead;

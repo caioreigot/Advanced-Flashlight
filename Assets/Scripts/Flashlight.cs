@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flashlight : MonoBehaviour
-{
+public class Flashlight : MonoBehaviour {
 
     public GameObject lightSource;
     public GameObject pointLight;
@@ -11,21 +10,30 @@ public class Flashlight : MonoBehaviour
     public AudioSource soundOn;
     public AudioSource soundOff;
 
-    private bool isOn = false;
+    [Header("Setup")]
+    public int secondsOfCharge;
+
+    [HideInInspector]
+    public bool isOn = false;
+    
+    [HideInInspector]
+    public bool hasCharge = false;
+    
     private bool rotating = false;
 
     private int rotationSpeed = 40;
 
     void Update() {
+        HandleCharge();
         HandleInput();
         HandleRotate();
     }
 
     void HandleInput() {
         if (Input.GetKeyDown(KeyCode.F)) {
-            if (!isOn)
+            if (!isOn && hasCharge)
                 FlashlightOn();
-            else 
+            else if (isOn)
                 FlashlightOff();
         }
     }
@@ -82,6 +90,13 @@ public class Flashlight : MonoBehaviour
             
             yield return new WaitForSeconds(0.01f);
         }
+    }
+
+    void HandleCharge() {
+        hasCharge = (BatterySlider.batteryCharge > 0);
+
+        if (!hasCharge && isOn)
+            FlashlightOff();
     }
 
 }
