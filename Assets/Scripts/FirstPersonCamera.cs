@@ -1,58 +1,61 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
+[AddComponentMenu("Camera-Control/Mouse Look")]
 public class FirstPersonCamera : MonoBehaviour {
+ 
+    public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
+    public RotationAxes axes = RotationAxes.MouseXAndY;
+    public static float sensitivityX = 3F;
+    public static float sensitivityY = 3F;
+ 
+    public float minimumX = -360F;
+    public float maximumX = 360F;
+ 
+    public float minimumY = -90F;
+    public float maximumY = 90F;
 
-    public Transform characterBody;
+    [Header("Setup")]
     public Transform characterHead;
+    public Transform characterBody;
 
-    ushort sensitivityX = 70;
-    ushort sensitivityY = 70;
-
-    float rotationX;
-    float rotationY;
-
-    float angleYMin = -90;
-    float angleYMax = 90;
-
-    public bool isLocked = false;
-
-    // float smoothRotx = 0;
-    // float smoothRoty = 0;
-
-    // float smoothCoefx = 0.005f;
-    // float smoothCoefy = 0.005f;
+    [HideInInspector]
+    public bool isLocked = false; 
+ 
+    float rotationY = 0F;
 
     void Start() {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
-
-    private void LateUpdate() {
-        transform.position = characterHead.position;
-    }
-
+ 
     void Update() {
-        if (!isLocked) {
-            float horizontalDelta = Input.GetAxisRaw("Mouse X");
-            float verticalDelta = Input.GetAxisRaw("Mouse Y");
+        if (isLocked) return;
 
-            /*
-            // Smooth Camera
-            smoothRotx = Mathf.Lerp(smoothRotx, horizontalDelta, smoothCoefx);
-            smoothRoty = Mathf.Lerp(smoothRoty, verticalDelta, smoothCoefy);
-            */
-
-            rotationX += horizontalDelta * Time.deltaTime * sensitivityX;
-            rotationY += verticalDelta * Time.deltaTime * sensitivityY;
-
-            rotationY = Mathf.Clamp(rotationY, angleYMin, angleYMax);
+        if (axes == RotationAxes.MouseXAndY) {
+            float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+           
+            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+            rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
+           
+            transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
 
             characterBody.localEulerAngles = new Vector3(0, rotationX, 0);
-
-            transform.eulerAngles = new Vector3(-rotationY, rotationX, 0);
         }
+        
+        else if (axes == RotationAxes.MouseX)
+            transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
+
+        else {
+            rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+            rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+           
+            transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
+        }
+    }
+
+    void LateUpdate() {
+        transform.position = characterHead.position;
     }
 
 }

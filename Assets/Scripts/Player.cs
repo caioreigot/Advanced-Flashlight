@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    FirstPersonCamera playerCamera;
     CharacterController controller;
 
     Vector3 forward;
@@ -18,7 +19,15 @@ public class Player : MonoBehaviour {
     float maxJumpHeight = 2f;
     float timeToMaxHeight = 0.5f;
 
+    private GameObject pauseCanvas;
+
+    void Awake() {
+        pauseCanvas = GameObject.FindGameObjectWithTag("PauseCanvas");
+        pauseCanvas.SetActive(false);
+    }
+
     void Start() {
+        playerCamera = FindObjectOfType<FirstPersonCamera>();
         controller = GetComponent<CharacterController>();
 
         gravity = (-2 * maxJumpHeight) / (timeToMaxHeight * timeToMaxHeight);
@@ -26,6 +35,11 @@ public class Player : MonoBehaviour {
     }
 
     void Update() {
+        HandleMovement();
+        HandleCanvas();
+    }
+
+    void HandleMovement() {
         float forwardInput = Input.GetAxisRaw("Vertical");
         float strafeInput = Input.GetAxisRaw("Horizontal");
 
@@ -47,6 +61,18 @@ public class Player : MonoBehaviour {
         Vector3 finalVelocity = forward + strafe + vertical;
         
         controller.Move(finalVelocity * Time.deltaTime);
+    }
+
+    void HandleCanvas() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            pauseCanvas.SetActive(!pauseCanvas.activeSelf);
+
+            Cursor.visible = pauseCanvas.activeSelf;
+            playerCamera.isLocked = pauseCanvas.activeSelf;
+
+            Cursor.lockState = pauseCanvas.activeSelf ? CursorLockMode.None : CursorLockMode.Locked;
+            Time.timeScale = pauseCanvas.activeSelf ? 0f : 1f;
+        }
     }
 
 }

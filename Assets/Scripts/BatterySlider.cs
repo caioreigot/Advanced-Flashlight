@@ -16,8 +16,6 @@ public class BatterySlider : MonoBehaviour {
     private Flashlight playerFlashlight;
     private Slider batterySlider;
 
-    private bool chargeEndedThisFrame = false;
-
     void Start() {
         playerFlashlight = FindObjectOfType<Flashlight>();
         batterySlider = GetComponent<Slider>();
@@ -34,14 +32,24 @@ public class BatterySlider : MonoBehaviour {
     }
 
     void Update() {
+        DecrementCharge();
+        CheckCharge();
+    }
+
+    void DecrementCharge() {
+        if (!playerFlashlight.isOn) return;
+
         if (decrementTimer <= 0) {
             batterySlider.value -= decrementAmount;
-            batteryCharge = (int)batterySlider.value;
             
             decrementTimer = maxDecrementTimer;
         } else
             decrementTimer -= Time.deltaTime;
+    }
 
+    void CheckCharge() {
+        batteryCharge = (int)batterySlider.value;
+        playerFlashlight.hasCharge = (batteryCharge > 0);
     }
 
 }
