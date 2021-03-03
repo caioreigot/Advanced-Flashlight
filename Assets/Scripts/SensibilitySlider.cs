@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class SensibilitySlider : MonoBehaviour {
 
     public Text sensibilityText;
-    private Slider slider;
+    Slider slider;
 
     void Start() {
         slider = GetComponent<Slider>();

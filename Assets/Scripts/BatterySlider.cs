@@ -6,15 +6,15 @@ using UnityEngine.UI;
 
 public class BatterySlider : MonoBehaviour {
 
-    private float decrementAmount;
+    float decrementAmount;
 
     public static int batteryCharge;
     
-    private float maxDecrementTimer;
-    private float decrementTimer;
+    float maxDecrementTimer;
+    float decrementTimer;
 
-    private Flashlight playerFlashlight;
-    private Slider batterySlider;
+    Flashlight playerFlashlight;
+    Slider batterySlider;
 
     void Start() {
         playerFlashlight = FindObjectOfType<Flashlight>();
@@ -32,11 +32,11 @@ public class BatterySlider : MonoBehaviour {
     }
 
     void Update() {
-        DecrementCharge();
+        DecrementChargeTimer();
         CheckCharge();
     }
 
-    void DecrementCharge() {
+    void DecrementChargeTimer() {
         if (!playerFlashlight.isOn) return;
 
         if (decrementTimer <= 0) {
@@ -50,6 +50,11 @@ public class BatterySlider : MonoBehaviour {
     void CheckCharge() {
         batteryCharge = (int)batterySlider.value;
         playerFlashlight.hasCharge = (batteryCharge > 0);
+    }
+
+    public void IncreaseCharge(int amount) {
+        batterySlider.value = Mathf.Clamp(batterySlider.value + amount, 0, 1000);
+        batteryCharge = (int)batterySlider.value;
     }
 
 }

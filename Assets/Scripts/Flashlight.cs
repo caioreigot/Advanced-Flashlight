@@ -12,7 +12,7 @@ public class Flashlight : MonoBehaviour {
     public AudioSource soundOn;
     public AudioSource soundOff;
 
-    private FirstPersonCamera playerCamera;
+    FirstPersonCamera playerCamera;
 
     [Header("Config")]
     public int secondsOfCharge;
@@ -23,9 +23,9 @@ public class Flashlight : MonoBehaviour {
     [HideInInspector]
     public bool hasCharge = false;
 
-    private bool rotating = false;
+    bool rotating = false;
 
-    private int rotationSpeed = 40;
+    int rotationSpeed = 40;
 
     void Start() {
         playerCamera = FindObjectOfType<FirstPersonCamera>();
