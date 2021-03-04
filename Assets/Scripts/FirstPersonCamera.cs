@@ -6,8 +6,8 @@ public class FirstPersonCamera : MonoBehaviour {
  
     public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
     public RotationAxes axes = RotationAxes.MouseXAndY;
-    public static float sensitivityX = 3F;
-    public static float sensitivityY = 3F;
+    public static float sensitivityX;
+    public static float sensitivityY;
  
     public float minimumX = -360F;
     public float maximumX = 360F;

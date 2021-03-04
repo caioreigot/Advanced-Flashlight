@@ -21,12 +21,10 @@ public class Player : MonoBehaviour {
 
     private GameObject pauseCanvas;
 
-    void Awake() {
+    void Start() {
         pauseCanvas = GameObject.FindGameObjectWithTag("PauseCanvas");
         pauseCanvas.SetActive(false);
-    }
 
-    void Start() {
         playerCamera = FindObjectOfType<FirstPersonCamera>();
         controller = GetComponent<CharacterController>();
 

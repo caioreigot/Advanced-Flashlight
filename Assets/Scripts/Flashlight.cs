@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Flashlight : MonoBehaviour {
 
+    public Transform playerItemPoint;
     public GameObject lightSource;
     public GameObject pointLight;
-    
+
     public Transform defaultRotation;
     
     public AudioSource soundOn;
@@ -16,25 +17,50 @@ public class Flashlight : MonoBehaviour {
 
     [Header("Config")]
     public int secondsOfCharge;
+    int rotationSpeed = 40;
 
-    [HideInInspector]
-    public bool isOn = false;
-    
-    [HideInInspector]
-    public bool hasCharge = false;
-
+    [HideInInspector] public bool isOn = false;
+    [HideInInspector] public bool hasCharge = false;
     bool rotating = false;
 
-    int rotationSpeed = 40;
+    Vector3 cameraRelatedPosition = new Vector3(0.544f, -0.343f, 0.817f);
+    Vector3 cameraRelatedScale = new Vector3(0.081f, 0.057f, 0.081f);
+
+    float lerpRotationSpeed = 0.2f;
 
     void Start() {
         playerCamera = FindObjectOfType<FirstPersonCamera>();
+
+        // transform.SetParent(Camera.main.transform);
+        // transform.localPosition = cameraRelatedPosition;
+        // transform.localScale = cameraRelatedScale;
     }
 
     void Update() {
         HandleCharge();
         HandleInput();
         HandleRotate();
+
+        float xAngle = playerCamera.transform.eulerAngles.x;
+        if (xAngle > 90) xAngle -= 360;
+        
+        transform.position = new Vector3
+        (
+            playerItemPoint.position.x,
+            playerItemPoint.position.y + -(xAngle/90),
+            playerItemPoint.position.z
+        );
+
+        // // Quanto maior o angulo, +Z no playerItemPoint
+        // playerItemPoint.position = new Vector3
+        // (
+        //     playerItemPoint.position.x,
+        //     playerItemPoint.position.y,
+        //     playerItemPoint.position.z + (xAngle/90)
+        // );
+
+        if (!rotating)
+            transform.rotation = Quaternion.Lerp(transform.rotation, defaultRotation.transform.rotation, lerpRotationSpeed); 
     }
 
     void HandleInput() {
@@ -85,21 +111,6 @@ public class Flashlight : MonoBehaviour {
         if (Input.GetMouseButtonUp(1)) {
             rotating = false;
             playerCamera.isLocked = false;
-            StartCoroutine(ResetRotation());
-        }
-    }
-
-    IEnumerator ResetRotation() {
-        while (true) {
-            transform.rotation = Quaternion.Lerp(transform.rotation, defaultRotation.transform.rotation, 0.05f);
-            //transform.rotation = Quaternion.RotateTowards(transform.rotation, defaultRotation.transform.rotation, 1.4f);
-            
-            if (transform.rotation == defaultRotation.transform.rotation || rotating)
-                yield break;
-
-            Debug.Log("Rodando...");
-            
-            yield return new WaitForSeconds(0.01f);
         }
     }
 

@@ -4,14 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SensibilitySlider : MonoBehaviour {
+public class SensitivitySlider : MonoBehaviour {
 
     public Text sensibilityText;
-    Slider slider;
 
-    void Start() {
+    [HideInInspector]
+    public Slider slider;
+
+    void Awake() {
         slider = GetComponent<Slider>();
-        slider.value = FirstPersonCamera.sensitivityX;
+        OnValueChanged();
     }
 
     void Update() {
