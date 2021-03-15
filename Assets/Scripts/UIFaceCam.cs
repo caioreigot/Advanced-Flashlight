@@ -9,10 +9,11 @@ public class UIFaceCam : MonoBehaviour {
     void Start() => cameraMain = Camera.main;
 
     void Update() {
-        transform.LookAt(
-                            transform.position + cameraMain.transform.rotation * Vector3.forward, 
-                            cameraMain.transform.rotation * Vector3.up
-                        );
+        transform.LookAt
+        (
+            transform.position + cameraMain.transform.rotation * Vector3.forward, 
+            cameraMain.transform.rotation * Vector3.up
+        );
     }
 
 }
